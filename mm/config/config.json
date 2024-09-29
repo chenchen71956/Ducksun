@@ -1,5 +1,0 @@
-{
-    "url": "http://bot.cynasck.asia:8999/sync/form/data?apiKey=583307d0624241f08c7d5d819633de73",
-    "email_template": "HMD.html",
-    "wechat_webhook_url": "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=1fe39395-17cd-4905-8f74-596605bbd1a1"
-}
