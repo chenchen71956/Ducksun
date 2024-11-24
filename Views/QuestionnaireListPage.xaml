@@ -1,0 +1,145 @@
+<local:ViewBase x:Class="DuckSun.Views.QuestionnaireListPage"
+     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+     xmlns:local="clr-namespace:DuckSun.Views"
+     Title="问卷列表">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- 顶部搜索栏 -->
+        <Grid Grid.Row="0" Margin="0,0,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Background="White" 
+                    CornerRadius="4" 
+                    Padding="10"
+                    BorderThickness="1"
+                    BorderBrush="#E2E8F0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="🔍" 
+                             VerticalAlignment="Center"
+                             Margin="0,0,10,0"/>
+                    <TextBox Grid.Column="1"
+                             BorderThickness="0"
+                             VerticalAlignment="Center"
+                             x:Name="SearchBox"
+                             TextChanged="SearchBox_TextChanged">
+                        <TextBox.Style>
+                            <Style TargetType="TextBox">
+                                <Style.Resources>
+                                    <VisualBrush x:Key="PlaceholderBrush" TileMode="None" Opacity="0.5" Stretch="None" AlignmentX="Left">
+                                        <VisualBrush.Visual>
+                                            <TextBlock Text="搜索问卷..." Foreground="Gray"/>
+                                        </VisualBrush.Visual>
+                                    </VisualBrush>
+                                </Style.Resources>
+                                <Style.Triggers>
+                                    <Trigger Property="Text" Value="">
+                                        <Setter Property="Background" Value="{StaticResource PlaceholderBrush}"/>
+                                    </Trigger>
+                                    <Trigger Property="Text" Value="{x:Null}">
+                                        <Setter Property="Background" Value="{StaticResource PlaceholderBrush}"/>
+                                    </Trigger>
+                                    <Trigger Property="IsKeyboardFocused" Value="True">
+                                        <Setter Property="Background" Value="White"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBox.Style>
+                    </TextBox>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- 问卷列表 -->
+        <ScrollViewer Grid.Row="1">
+            <WrapPanel x:Name="QuestionnairePanel" 
+                      Orientation="Horizontal"
+                      Margin="-10">
+                <!-- 问卷卡片模板 -->
+                <ItemsControl x:Name="QuestionnaireItems">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="White"
+                                    CornerRadius="8"
+                                    Margin="10"
+                                    Width="300"
+                                    BorderThickness="1"
+                                    BorderBrush="#E2E8F0"
+                                    Cursor="Hand">
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="10" 
+                                                    ShadowDepth="1" 
+                                                    Opacity="0.1"/>
+                                </Border.Effect>
+                                <Grid Margin="20">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <!-- 问卷标题 -->
+                                    <TextBlock Text="{Binding Title}"
+                                             FontSize="18"
+                                             FontWeight="Bold"
+                                             TextTrimming="CharacterEllipsis"/>
+
+                                    <!-- 创建时间 -->
+                                    <StackPanel Grid.Row="1" 
+                                              Orientation="Horizontal"
+                                              Margin="0,10">
+                                        <TextBlock Text="创建时间："
+                                                 Foreground="#666"/>
+                                        <TextBlock Text="{Binding CreateTime, StringFormat={}{0:yyyy-MM-dd HH:mm}}"
+                                                 Foreground="#666"/>
+                                    </StackPanel>
+
+                                    <!-- 统计信息 -->
+                                    <StackPanel Grid.Row="2" 
+                                              Orientation="Horizontal"
+                                              Margin="0,0,0,15">
+                                        <TextBlock Text="{Binding AnswerCount, StringFormat={}答题数：{0}}"
+                                                 Margin="0,0,15,0"/>
+                                        <TextBlock Text="{Binding Status, Converter={StaticResource StatusConverter}}"
+                                                 Foreground="{Binding Status, Converter={StaticResource StatusColorConverter}}"/>
+                                    </StackPanel>
+
+                                    <!-- 操作按钮 -->
+                                    <StackPanel Grid.Row="3" 
+                                              Orientation="Horizontal"
+                                              HorizontalAlignment="Right">
+                                        <Button Content="设置答案"
+                                                Margin="0,0,10,0"
+                                                Click="SetAnswer_Click"
+                                                Tag="{Binding Id}"/>
+                                        <Button Content="查看详情"
+                                                Click="ViewDetail_Click"
+                                                Tag="{Binding Id}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </WrapPanel>
+        </ScrollViewer>
+
+        <!-- 在Grid的最后添加 -->
+        <Control x:Name="LoadingIndicator" 
+                 Style="{StaticResource LoadingSpinner}"
+                 Visibility="Collapsed"/>
+    </Grid>
+</local:ViewBase>

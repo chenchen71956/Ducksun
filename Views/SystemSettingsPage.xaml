@@ -1,0 +1,100 @@
+<local:ViewBase x:Class="DuckSun.Views.SystemSettingsPage"
+     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+     xmlns:local="clr-namespace:DuckSun.Views"
+     Title="系统设置">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="0,0,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Content="返回"
+                    Style="{StaticResource ModernSecondaryButton}"
+                    Click="Back_Click"/>
+
+            <TextBlock Grid.Column="1"
+                      Text="系统设置" 
+                      FontSize="24" 
+                      FontWeight="Bold"
+                      Margin="20,0"/>
+        </Grid>
+
+        <ScrollViewer Grid.Row="1">
+            <StackPanel>
+                <Border Background="White"
+                        Margin="0,0,0,20"
+                        Padding="20"
+                        CornerRadius="4"
+                        BorderThickness="1"
+                        BorderBrush="#E2E8F0">
+                    <StackPanel>
+                        <TextBlock Text="基本设置"
+                                 FontWeight="Bold"
+                                 Margin="0,0,0,10"/>
+                        
+                        <CheckBox x:Name="AutoStartupCheckBox"
+                                Content="开机自启动"
+                                Margin="0,0,0,10"/>
+                        
+                        <CheckBox x:Name="EnableAutoScoringCheckBox"
+                                Content="启用自动评分"
+                                Margin="0,0,0,10"/>
+                        
+                        <CheckBox x:Name="ScoreUnansweredCheckBox"
+                                Content="为未答题目评分（0分）"
+                                Margin="0,0,0,10"
+                                IsEnabled="{Binding IsChecked, ElementName=EnableAutoScoringCheckBox}"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Background="White"
+                        Padding="20"
+                        CornerRadius="4"
+                        BorderThickness="1"
+                        BorderBrush="#E2E8F0">
+                    <StackPanel>
+                        <TextBlock Text="问卷自动评分设置"
+                                 FontWeight="Bold"
+                                 Margin="0,0,0,10"/>
+                        
+                        <TextBlock Text="选择需要自动评分的问卷："
+                                 Foreground="#666"
+                                 Margin="0,0,0,10"/>
+                        
+                        <ItemsControl x:Name="QuestionnaireList">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <CheckBox Content="{Binding Title}"
+                                            IsChecked="{Binding IsAutoScoring}"
+                                            Margin="0,0,0,5"
+                                            IsEnabled="{Binding HasScoreRules}"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <StackPanel Grid.Row="2" 
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Margin="0,20,0,0">
+            <Button Content="取消"
+                    Style="{StaticResource ModernSecondaryButton}"
+                    Margin="0,0,10,0"
+                    Click="Cancel_Click"/>
+            <Button Content="保存"
+                    Style="{StaticResource ModernButton}"
+                    Click="Save_Click"/>
+        </StackPanel>
+    </Grid>
+</local:ViewBase>
